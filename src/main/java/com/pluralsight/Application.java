@@ -5,7 +5,6 @@ import java.io.FileReader;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.LocalTime;
 import java.util.*;
 
 public class Application {
@@ -58,6 +57,10 @@ public class Application {
     }
 
     public static void Ledger() {
+        boolean inLedger = true;
+
+        while(inLedger){
+
         System.out.println("Ledger screen");
 
         Scanner scanner = new Scanner(System.in);
@@ -80,10 +83,11 @@ public class Application {
                 break;
 
             case 2:
-
+            displayDeposit();
                 break;
 
             case 3:
+                displayPayments();
 
                 break;
 
@@ -93,13 +97,14 @@ public class Application {
                 break;
 
             case 0:
+                inLedger = false;
                 break;
 
             default:
                 System.out.println("Enter valid option");
 
         }
-
+        }
 
     }
 
@@ -148,7 +153,7 @@ public class Application {
 
         HashMap<LocalDateTime, Transactions> transactions = getTransaction();
 
-        System.out.println("We carry the following inventory: ");
+        System.out.println("Transactions & Invoices: ");
 
         ArrayList<LocalDateTime> sortedKeys = new ArrayList<>(transactions.keySet());
 
@@ -158,6 +163,48 @@ public class Application {
         for (LocalDateTime key : sortedKeys) {
 
             System.out.println(transactions.get(key));
+
+        }
+
+    }
+
+    public static void displayDeposit(){
+        HashMap<LocalDateTime, Transactions> transactions = getTransaction();
+
+        System.out.println("Deposits: ");
+
+        ArrayList<LocalDateTime> sortedKeys = new ArrayList<>(transactions.keySet());
+
+        Collections.sort(sortedKeys);
+
+
+        for (LocalDateTime key : sortedKeys) {
+            Transactions d = transactions.get(key);
+
+           if (d.getPrice() > 0){
+               System.out.println(d);
+           }
+
+        }
+
+    }
+
+    public static void displayPayments(){
+        HashMap<LocalDateTime, Transactions> transactions = getTransaction();
+
+        System.out.println("Payments: ");
+
+        ArrayList<LocalDateTime> sortedKeys = new ArrayList<>(transactions.keySet());
+
+        Collections.sort(sortedKeys);
+
+
+        for (LocalDateTime key : sortedKeys) {
+            Transactions d = transactions.get(key);
+
+            if (d.getPrice() < 0){
+                System.out.println(d);
+            }
 
         }
 
