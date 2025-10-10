@@ -1,18 +1,28 @@
 package com.pluralsight;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 public class Transactions {
-    private LocalDateTime date;
+    private LocalDate date;
+    private LocalTime time;
     private String description, vendorName;
     private double price;
 
-    public LocalDateTime getDate() {
+    public LocalTime getTime() {
+        return time;
+    }
+
+    public void setTime(LocalTime time) {
+        this.time = time;
+    }
+
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(LocalDateTime date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
@@ -40,15 +50,17 @@ public class Transactions {
         this.price = price;
     }
 
-    public Transactions(String vendorName, LocalDateTime date, String description, double price) {
-        this.vendorName = vendorName;
+
+    public Transactions(LocalDate date, LocalTime time, String description, String vendorName, double price) {
         this.date = date;
+        this.time = time;
         this.description = description;
+        this.vendorName = vendorName;
         this.price = price;
     }
 
     @Override
     public String toString() {
-        return date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd|HH:mm:ss")) + "|" + description + "|" + vendorName + "|" + price ;
+        return date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + "|" + time.format(DateTimeFormatter.ofPattern("HH:mm:ss")) + "|" + description + "|" + vendorName + "|" + price ;
     }
 }
