@@ -235,22 +235,22 @@ public class Ledger {
 
     }
 
-//    public static void yearToDate() {
-//        HashMap<LocalDateTime, Transactions> transactions = getTransaction();
-//
-//        int year = LocalDate.now().getYear();
-//        LocalDate todayDate = LocalDate.now();
-//        LocalDate firstDay = LocalDate.of(year, 1, 1);
-//        for (Transactions key : transactions.values()) {
-//
-//
-//            if (key.getDate().isEqual(todayDate) && key.getDate().isAfter(firstDay)) {
-//                System.out.println(key);
-//            }
-//
-//
-//        }
-//    }
+    public static void yearToDate() {
+        HashMap<LocalDateTime, Transactions> transactions = getTransaction();
+
+        int year = LocalDate.now().getYear();
+        LocalDate todayDate = LocalDate.now();
+        LocalDate firstDay = LocalDate.of(year, 1, 1);
+        for (Transactions key : transactions.values()) {
+
+
+            if (key.getDate().isEqual(todayDate) && key.getDate().isAfter(firstDay)) {
+                System.out.println(key);
+            }
+
+
+        }
+    }
 
     public static void searchByVendor() {
         Scanner scanner = new Scanner(System.in);
