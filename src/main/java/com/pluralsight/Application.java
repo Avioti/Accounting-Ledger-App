@@ -10,6 +10,8 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+import static com.pluralsight.Ledger.ledgerScreen;
+
 public class Application {
     public static void main(String[] args) {
         homeScreen();
@@ -54,7 +56,13 @@ public class Application {
 
                 case 4:
 
-                    storeActive = false;
+                    System.out.println("Are you sure you want to Exit?");
+                    System.out.print("\nEnter Yes/No: ");
+                    if(scanner.nextLine().trim().equalsIgnoreCase("yes")){
+                        storeActive = false;
+                    }
+
+
 
                     break;
 
@@ -71,10 +79,10 @@ public class Application {
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("Enter Deposit info");
-        System.out.print("Service Description: ");
+        System.out.print("Description: ");
         String description = scanner.next().trim().toLowerCase();
         scanner.nextLine();
-        System.out.print("Depositee: ");
+        System.out.print("Name of Depositee: ");
         String vendor = scanner.next().trim();
         scanner.nextLine();
         System.out.print("Total Deposited: ");
@@ -89,10 +97,7 @@ public class Application {
 
             BufferedWriter bufWriter = new BufferedWriter(fileWriter);
             bufWriter.newLine();
-            int invoiceNumber = 0;
-            invoiceNumber++;
-
-            String format = String.format(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + "|" + LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")) + "|" + "Invoice " + invoiceNumber + " paid " + "Service: %s|%s|%.2f", description, vendor, price);
+            String format = String.format(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + "|" + LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")) + "|" + "%s|%s|%.2f", description, vendor, price);
             bufWriter.write(format);
             bufWriter.close();
 
@@ -113,6 +118,7 @@ public class Application {
         System.out.print("Vendor: ");
         String vendor = scanner.next().trim();
         scanner.nextLine();
+
         System.out.print("Total deducted: ");
         double price = scanner.nextDouble();
         scanner.nextLine();
@@ -133,64 +139,6 @@ public class Application {
             e.printStackTrace();
 
         }
-    }
-
-
-    public static void ledgerScreen() {
-        boolean inLedger = true;
-
-        while (inLedger) {
-
-            System.out.println("Ledger screen");
-
-            Scanner scanner = new Scanner(System.in);
-            HashMap<LocalDateTime, Transactions> transactions = getTransaction();
-
-            System.out.println("1 - All");
-            System.out.println("2 - Deposits");
-            System.out.println("3 - Payments");
-            System.out.println("4 - Reports");
-            System.out.println("0 - Exit to Home page");
-
-            int option = scanner.nextInt();
-            scanner.nextLine();
-
-            switch (option) {
-
-                case 1:
-
-                    displayAll();
-
-                    break;
-
-                case 2:
-
-                    displayDeposit();
-
-                    break;
-
-                case 3:
-
-                    displayPayments();
-
-                    break;
-
-                case 4:
-
-                    reports();
-
-                    break;
-
-                case 0:
-                    inLedger = false;
-                    break;
-
-                default:
-                    System.out.println("Enter valid option");
-
-            }
-        }
-
     }
 
     public static HashMap<LocalDateTime, Transactions> getTransaction() {
@@ -233,147 +181,9 @@ public class Application {
     }
 
 
-    public static void displayAll() {
 
-        HashMap<LocalDateTime, Transactions> transactions = getTransaction();
 
-        System.out.println("Transactions & Invoices: ");
 
-        ArrayList<LocalDateTime> sortedKeys = new ArrayList<>(transactions.keySet());
-
-        Collections.sort(sortedKeys);
-
-
-        for (LocalDateTime key : sortedKeys) {
-
-            System.out.println(transactions.get(key));
-
-        }
-
-    }
-
-    public static void displayDeposit() {
-        HashMap<LocalDateTime, Transactions> transactions = getTransaction();
-
-        System.out.println("Deposits: ");
-
-        ArrayList<LocalDateTime> sortedKeys = new ArrayList<>(transactions.keySet());
-
-        Collections.sort(sortedKeys);
-
-
-        for (LocalDateTime key : sortedKeys) {
-            Transactions d = transactions.get(key);
-
-            if (d.getPrice() > 0) {
-                System.out.println(d);
-            }
-
-        }
-
-    }
-
-    public static void displayPayments() {
-        HashMap<LocalDateTime, Transactions> transactions = getTransaction();
-
-        System.out.println("Payments: ");
-
-        ArrayList<LocalDateTime> sortedKeys = new ArrayList<>(transactions.keySet());
-
-        Collections.sort(sortedKeys);
-
-
-        for (LocalDateTime key : sortedKeys) {
-            Transactions d = transactions.get(key);
-
-            if (d.getPrice() < 0) {
-                System.out.println(d);
-            }
-
-        }
-
-    }
-
-    public static void reports() {
-
-        boolean reportsScreen = true;
-
-        while (reportsScreen) {
-
-            Scanner scanner = new Scanner(System.in);
-
-            System.out.println("1 - Month To Date");
-            System.out.println("2 - Previous Month");
-            System.out.println("3 - Year To Date");
-            System.out.println("4 - Previous Year");
-            System.out.println("5 - Search by Vendor");
-            System.out.println("0 - Back to Ledger Page");
-
-            int option = scanner.nextInt();
-            scanner.nextLine();
-
-            switch (option) {
-
-                case 1:
-
-
-                    break;
-
-                case 2:
-
-
-                    break;
-
-
-                case 3:
-
-
-                    break;
-
-                case 4:
-
-                    break;
-
-                case 5:
-
-                    break;
-
-                case 0:
-                    reportsScreen = false;
-                    break;
-
-                default:
-                    System.out.println("Enter valid option");
-
-            }
-
-
-        }
-
-
-    }
-
-    public static String monthToDate() {
-
-        HashMap<LocalDateTime, Transactions> transactions = getTransaction();
-
-        System.out.println("Month to Date: ");
-
-
-        ArrayList<LocalDateTime> sortedKeys = new ArrayList<>(transactions.keySet());
-
-        Collections.sort(sortedKeys);
-
-
-        for (LocalDateTime key : sortedKeys) {
-            Transactions d = transactions.get(key);
-
-
-        }
-
-
-        return monthToDate();
-    }
 
 
 }
