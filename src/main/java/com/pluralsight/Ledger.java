@@ -241,13 +241,18 @@ public class Ledger {
         int year = LocalDate.now().getYear();
         LocalDate todayDate = LocalDate.now();
         LocalDate firstDay = LocalDate.of(year, 1, 1);
-        for (Transactions key : transactions.values()) {
+
+        ArrayList<LocalDateTime> sortedKeys = new ArrayList<>(transactions.keySet());
+
+        Collections.sort(sortedKeys, Collections.reverseOrder());
 
 
-            if (key.getDate().isEqual(todayDate) && key.getDate().isAfter(firstDay)) {
-                System.out.println(key);
+        for (LocalDateTime key : sortedKeys) {
+            Transactions sortedKey = transactions.get(key);
+
+            if (!sortedKey.getDate().isAfter(todayDate) && sortedKey.getDate().isAfter(firstDay)) {
+                System.out.println(sortedKey);
             }
-
 
         }
     }
@@ -259,7 +264,7 @@ public class Ledger {
         String option = scanner.nextLine().replaceAll("\\s", "").trim().toLowerCase();
         for (Transactions key : transactions.values()) {
 
-            if (key.getVendorName().trim().toLowerCase().contains(option)) {
+            if (key.getVendorName().trim().equalsIgnoreCase(option)) {
                 System.out.println(key);
             }
 
