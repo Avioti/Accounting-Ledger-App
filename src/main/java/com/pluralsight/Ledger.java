@@ -172,6 +172,7 @@ public class Ledger {
                     break;
 
                 case 4:
+                    previousYear();
 
                     break;
 
@@ -251,6 +252,29 @@ public class Ledger {
             Transactions sortedKey = transactions.get(key);
 
             if (!sortedKey.getDate().isAfter(todayDate) && sortedKey.getDate().isAfter(firstDay)) {
+                System.out.println(sortedKey);
+            }
+
+        }
+    }
+
+    public static void previousYear(){
+        HashMap<LocalDateTime, Transactions> transactions = getTransaction();
+
+        int year = LocalDate.now().getYear();
+        int previousYear = year -1;
+        LocalDate firstDay = LocalDate.of(previousYear, 1, 1);
+        LocalDate lastDay = LocalDate.of(previousYear, 12,31);
+
+        ArrayList<LocalDateTime> sortedKeys = new ArrayList<>(transactions.keySet());
+
+        sortedKeys.sort(Collections.reverseOrder());
+
+
+        for (LocalDateTime key : sortedKeys) {
+            Transactions sortedKey = transactions.get(key);
+
+            if (!sortedKey.getDate().isAfter(lastDay) && sortedKey.getDate().isAfter(firstDay)) {
                 System.out.println(sortedKey);
             }
 
