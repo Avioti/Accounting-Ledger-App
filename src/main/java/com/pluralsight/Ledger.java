@@ -285,10 +285,26 @@ public class Ledger {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter the Vendor/Depositee Name");
         HashMap<LocalDateTime, Transactions> transactions = getTransaction();
-        String option = scanner.nextLine().replaceAll("\\s", "").trim().toLowerCase();
+        String option = scanner.nextLine().trim().replaceAll("\\s", "").toLowerCase();
         for (Transactions key : transactions.values()) {
 
-            if (key.getVendorName().trim().equalsIgnoreCase(option)) {
+            if (key.getVendorName().trim().replaceAll("\\s", "").equalsIgnoreCase(option) || key.getVendorName().trim().replaceAll("\\s", "").contains(option)) {
+                System.out.println(key);
+            }
+
+
+        }
+
+    }
+
+    public static void searchFunction() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter any parameter to search by Start/End Date, Description, Vendor, or Amount");
+        HashMap<LocalDateTime, Transactions> transactions = getTransaction();
+        String option = scanner.nextLine().trim().replaceAll("\\s", "").toLowerCase();
+        for (Transactions key : transactions.values()) {
+
+            if (key.getVendorName().trim().replaceAll("\\s", "").equalsIgnoreCase(option) || key.getVendorName().trim().replaceAll("\\s", "").contains(option)) {
                 System.out.println(key);
             }
 
