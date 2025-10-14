@@ -1,20 +1,18 @@
 package com.pluralsight;
 
-import javax.sound.sampled.FloatControl;
-import java.sql.SQLOutput;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Scanner;
-
 import static com.pluralsight.Application.*;
-import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
+
 
 public class Ledger {
     public static void ledgerScreen() {
+
+
         boolean inLedger = true;
 
         while (inLedger) {
@@ -73,11 +71,15 @@ public class Ledger {
 
     public static void displayAll() {
 
+
         HashMap<LocalDateTime, Transactions> transactions = getTransaction();
+
 
         System.out.println("Transactions & Invoices: ");
 
+
         ArrayList<LocalDateTime> sortedKeys = new ArrayList<>(transactions.keySet());
+
 
         Collections.sort(sortedKeys, Collections.reverseOrder());
 
@@ -91,11 +93,16 @@ public class Ledger {
     }
 
     public static void displayDeposit() {
+
+
         HashMap<LocalDateTime, Transactions> transactions = getTransaction();
+
 
         System.out.println("Deposits: ");
 
+
         ArrayList<LocalDateTime> sortedKeys = new ArrayList<>(transactions.keySet());
+
 
         Collections.sort(sortedKeys, Collections.reverseOrder());
 
@@ -112,11 +119,16 @@ public class Ledger {
     }
 
     public static void displayPayments() {
+
+
         HashMap<LocalDateTime, Transactions> transactions = getTransaction();
+
 
         System.out.println("Payments: ");
 
+
         ArrayList<LocalDateTime> sortedKeys = new ArrayList<>(transactions.keySet());
+
 
         Collections.sort(sortedKeys, Collections.reverseOrder());
 
@@ -134,6 +146,7 @@ public class Ledger {
 
     public static void reports() {
 
+
         boolean reportsScreen = true;
 
         while (reportsScreen) {
@@ -145,6 +158,7 @@ public class Ledger {
             System.out.println("3 - Year To Date");
             System.out.println("4 - Previous Year");
             System.out.println("5 - Search by Vendor");
+            System.out.println("6 - Search with either Start/End Date, Desc, Vendor, Amount");
             System.out.println("0 - Back to Ledger Page");
 
             int option = scanner.nextInt();
@@ -181,6 +195,10 @@ public class Ledger {
 
                     break;
 
+                case 6:
+                    searchFunction();
+                    break;
+
                 case 0:
                     reportsScreen = false;
                     break;
@@ -200,9 +218,10 @@ public class Ledger {
 
 
         HashMap<LocalDateTime, Transactions> transactions = getTransaction();
-        int year = LocalDate.now().getYear();
+
         LocalDateTime todayDate = LocalDateTime.now().plusDays(1);
         LocalDateTime option = todayDate.withDayOfMonth(1);
+
         for (LocalDateTime key : transactions.keySet()) {
             Transactions value = transactions.get(key);
 
@@ -217,16 +236,26 @@ public class Ledger {
     }
 
     public static void previousMonth() {
+
+
         HashMap<LocalDateTime, Transactions> transactions = getTransaction();
+
+
         LocalDate todayDate = LocalDate.now();
         LocalDate firstOfTheMonth = todayDate.withDayOfMonth(1);
+
+
         LocalDate lastMonth = firstOfTheMonth.minusMonths(1);
         LocalDate lastMonthEnd = firstOfTheMonth.minusDays(1);
 
+
         for (LocalDateTime key : transactions.keySet()) {
+
             Transactions value = transactions.get(key);
+
             LocalDate keyDate = key.toLocalDate();
-            if (!keyDate.isAfter(lastMonthEnd) && !keyDate.isBefore(lastMonth)){
+
+            if (!keyDate.isAfter(lastMonthEnd) && !keyDate.isBefore(lastMonth)) {
                 System.out.println(value);
 
             }
@@ -237,13 +266,17 @@ public class Ledger {
     }
 
     public static void yearToDate() {
+
+
         HashMap<LocalDateTime, Transactions> transactions = getTransaction();
 
         int year = LocalDate.now().getYear();
         LocalDate todayDate = LocalDate.now();
         LocalDate firstDay = LocalDate.of(year, 1, 1);
 
+
         ArrayList<LocalDateTime> sortedKeys = new ArrayList<>(transactions.keySet());
+
 
         Collections.sort(sortedKeys, Collections.reverseOrder());
 
@@ -258,15 +291,22 @@ public class Ledger {
         }
     }
 
-    public static void previousYear(){
+    public static void previousYear() {
+
+
         HashMap<LocalDateTime, Transactions> transactions = getTransaction();
 
+
         int year = LocalDate.now().getYear();
-        int previousYear = year -1;
+        int previousYear = year - 1;
+
+
         LocalDate firstDay = LocalDate.of(previousYear, 1, 1);
-        LocalDate lastDay = LocalDate.of(previousYear, 12,31);
+
+        LocalDate lastDay = LocalDate.of(previousYear, 12, 31);
 
         ArrayList<LocalDateTime> sortedKeys = new ArrayList<>(transactions.keySet());
+
 
         sortedKeys.sort(Collections.reverseOrder());
 
@@ -282,10 +322,19 @@ public class Ledger {
     }
 
     public static void searchByVendor() {
+
+
         Scanner scanner = new Scanner(System.in);
+
+
         System.out.println("Enter the Vendor/Depositee Name");
+
+
         HashMap<LocalDateTime, Transactions> transactions = getTransaction();
+
         String option = scanner.nextLine().trim().replaceAll("\\s", "").toLowerCase();
+
+
         for (Transactions key : transactions.values()) {
 
             if (key.getVendorName().trim().replaceAll("\\s", "").equalsIgnoreCase(option) || key.getVendorName().trim().replaceAll("\\s", "").contains(option)) {
@@ -298,13 +347,84 @@ public class Ledger {
     }
 
     public static void searchFunction() {
+
+
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter any parameter to search by Start/End Date, Description, Vendor, or Amount");
+
+
         HashMap<LocalDateTime, Transactions> transactions = getTransaction();
-        String option = scanner.nextLine().trim().replaceAll("\\s", "").toLowerCase();
+
+
+        System.out.print("Enter Start Date YY-MM-DD: ");
+        String startDate = scanner.nextLine();
+
+
+        System.out.print("Enter End Date YY-MM-DD: ");
+        String endDate = scanner.nextLine();
+
+
+        System.out.print("Description: ");
+        String description = scanner.nextLine();
+
+
+        System.out.print("Vendor: ");
+        String vendor = scanner.nextLine();
+
+
+        System.out.print("Enter Price 0.00: ");
+        String price = scanner.nextLine();
+
+
         for (Transactions key : transactions.values()) {
 
-            if (key.getVendorName().trim().replaceAll("\\s", "").equalsIgnoreCase(option) || key.getVendorName().trim().replaceAll("\\s", "").contains(option)) {
+
+            boolean matches = true;
+
+
+            LocalDate keyDate = key.getDate().atStartOfDay().toLocalDate();
+
+
+            if (!startDate.equalsIgnoreCase("")) {
+                LocalDate start = LocalDate.parse(startDate);
+
+                if (keyDate.isBefore(start)) {
+                    matches = false;
+                }
+            }
+
+
+            if (!endDate.equalsIgnoreCase("")) {
+                LocalDate end = LocalDate.parse(endDate);
+
+                if (keyDate.isAfter(end)) {
+                    matches = false;
+                }
+            }
+
+
+            if (!vendor.equalsIgnoreCase("")) {
+                if (!key.getVendorName().toLowerCase().contains(vendor.toLowerCase())) {
+                    matches = false;
+                }
+            }
+
+
+            if (!description.equalsIgnoreCase("")) {
+                if (!key.getdescription().toLowerCase().contains(description.toLowerCase())) {
+                    matches = false;
+                }
+            }
+
+
+            if (!price.equalsIgnoreCase("")) {
+                double money = Double.parseDouble(price);
+
+                if (Double.compare(key.getPrice(), money) != 0) {
+                    matches = false;
+                }
+            }
+            if (matches) {
+
                 System.out.println(key);
             }
 
