@@ -10,7 +10,7 @@ import static com.pluralsight.Application.*;
 
 
 public class Ledger {
-    public static void ledgerScreen() {
+    public static void ledgerScreen() throws InterruptedException {
 
 
         boolean inLedger = true;
@@ -77,10 +77,13 @@ public class Ledger {
 
     }
 
-    public static void displayAll() {
+    public static void displayAll() throws InterruptedException {
 
 
         HashMap<LocalDateTime, Transactions> transactions = getTransaction();
+
+
+        System.out.println();
 
 
         System.out.println("Transactions & Invoices: ");
@@ -95,15 +98,19 @@ public class Ledger {
         for (LocalDateTime key : sortedKeys) {
 
             System.out.println(transactions.get(key));
+            Thread.sleep(100);
 
         }
 
     }
 
-    public static void displayDeposit() {
+    public static void displayDeposit() throws InterruptedException {
 
 
         HashMap<LocalDateTime, Transactions> transactions = getTransaction();
+
+
+        System.out.println();
 
 
         System.out.println("Deposits: ");
@@ -121,15 +128,18 @@ public class Ledger {
             if (d.getPrice() > 0) {
                 System.out.println(d);
             }
-
+            Thread.sleep(100);
         }
 
     }
 
-    public static void displayPayments() {
+    public static void displayPayments() throws InterruptedException {
 
 
         HashMap<LocalDateTime, Transactions> transactions = getTransaction();
+
+
+        System.out.println();
 
 
         System.out.println("Payments: ");
@@ -147,12 +157,12 @@ public class Ledger {
             if (d.getPrice() < 0) {
                 System.out.println(d);
             }
-
+            Thread.sleep(100);
         }
 
     }
 
-    public static void reports() {
+    public static void reports() throws InterruptedException {
 
         System.out.println();
 
@@ -160,7 +170,7 @@ public class Ledger {
         System.out.println("             Reports Screen                ");
         System.out.println("     ================================     ");
 
-        System.out.println();
+
 
         boolean reportsScreen = true;
 
@@ -168,6 +178,8 @@ public class Ledger {
         while (reportsScreen) {
 
             Scanner scanner = new Scanner(System.in);
+
+            System.out.println();
 
             System.out.println("1 - Month To Date");
             System.out.println("2 - Previous Month");
@@ -232,8 +244,11 @@ public class Ledger {
 
     }
 
-    public static void monthToDate() {
+    public static void monthToDate() throws InterruptedException {
 
+        System.out.println();
+
+        System.out.println("Month-To-Date");
 
         HashMap<LocalDateTime, Transactions> transactions = getTransaction();
 
@@ -247,14 +262,17 @@ public class Ledger {
                 System.out.println(value);
             }
 
-
+            Thread.sleep(75);
         }
 
 
     }
 
-    public static void previousMonth() {
+    public static void previousMonth() throws InterruptedException {
 
+        System.out.println();
+
+        System.out.println("Previous-Month");
 
         HashMap<LocalDateTime, Transactions> transactions = getTransaction();
 
@@ -277,14 +295,17 @@ public class Ledger {
                 System.out.println(value);
 
             }
-
+            Thread.sleep(75);
 
         }
 
     }
 
-    public static void yearToDate() {
+    public static void yearToDate() throws InterruptedException {
 
+        System.out.println();
+
+        System.out.println("Year-To-Date");
 
         HashMap<LocalDateTime, Transactions> transactions = getTransaction();
 
@@ -305,12 +326,15 @@ public class Ledger {
             if (!sortedKey.getDate().isAfter(todayDate) && sortedKey.getDate().isAfter(firstDay)) {
                 System.out.println(sortedKey);
             }
-
+            Thread.sleep(75);
         }
     }
 
-    public static void previousYear() {
+    public static void previousYear() throws InterruptedException {
 
+        System.out.println();
+
+        System.out.println("Previous-year");
 
         HashMap<LocalDateTime, Transactions> transactions = getTransaction();
 
@@ -329,28 +353,33 @@ public class Ledger {
         sortedKeys.sort(Collections.reverseOrder());
 
 
+
         for (LocalDateTime key : sortedKeys) {
             Transactions sortedKey = transactions.get(key);
 
             if (!sortedKey.getDate().isAfter(lastDay) && sortedKey.getDate().isAfter(firstDay)) {
                 System.out.println(sortedKey);
             }
-
+            Thread.sleep(75);
         }
     }
 
-    public static void searchByVendor() {
+    public static void searchByVendor() throws InterruptedException {
 
 
         Scanner scanner = new Scanner(System.in);
 
+        System.out.println();
 
         System.out.println("Enter the Vendor/Depositee Name");
+        System.out.print("Enter: ");
 
 
         HashMap<LocalDateTime, Transactions> transactions = getTransaction();
 
         String option = scanner.nextLine();
+
+        System.out.println();
 
 
         for (Transactions key : transactions.values()) {
@@ -369,17 +398,18 @@ public class Ledger {
             if (matches){
                 System.out.println(key);
             }
-
+            Thread.sleep(75);
 
         }
 
     }
 
-    public static void searchFunction() {
+    public static void searchFunction() throws InterruptedException {
 
 
         Scanner scanner = new Scanner(System.in);
 
+        System.out.println();
 
         HashMap<LocalDateTime, Transactions> transactions = getTransaction();
 
@@ -403,6 +433,8 @@ public class Ledger {
         System.out.print("Enter Price : ");
         String price = scanner.nextLine();
 
+        System.out.println();
+
 
         for (Transactions key : transactions.values()) {
 
@@ -421,7 +453,7 @@ public class Ledger {
                         matches = false;
                     }
                 }catch (Exception e){
-                    
+
                 }
 
             }
@@ -435,7 +467,7 @@ public class Ledger {
                         matches = false;
                     }
                 }catch (Exception e){
-                    
+
                 }
 
             }
@@ -447,7 +479,7 @@ public class Ledger {
                         matches = false;
                     }
                 }catch (Exception e){
-                    
+
                 }
 
             }
@@ -459,7 +491,7 @@ public class Ledger {
                         matches = false;
                     }
                 }catch (Exception e){
-                    
+
                 }
 
             }
@@ -473,7 +505,7 @@ public class Ledger {
                         matches = false;
                     }
                 }catch (Exception e){
-                    
+
                 }
 
             }
@@ -482,7 +514,7 @@ public class Ledger {
                 System.out.println(key);
             }
 
-
+            Thread.sleep(75);
         }
 
     }
