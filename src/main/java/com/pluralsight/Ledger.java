@@ -17,16 +17,24 @@ public class Ledger {
 
         while (inLedger) {
 
-            System.out.println("Ledger screen");
+            System.out.println();
+
+            System.out.println("     ================================     ");
+            System.out.println("              Ledger screen               ");
+            System.out.println("     ================================     ");
+
+            System.out.println();
 
             Scanner scanner = new Scanner(System.in);
-            HashMap<LocalDateTime, Transactions> transactions = getTransaction();
+
 
             System.out.println("1 - All");
             System.out.println("2 - Deposits");
             System.out.println("3 - Payments");
             System.out.println("4 - Reports");
             System.out.println("0 - Exit to Home page");
+            System.out.println();
+            System.out.print("Enter Option #: ");
 
             int option = scanner.nextInt();
             scanner.nextLine();
@@ -81,7 +89,7 @@ public class Ledger {
         ArrayList<LocalDateTime> sortedKeys = new ArrayList<>(transactions.keySet());
 
 
-        Collections.sort(sortedKeys, Collections.reverseOrder());
+        sortedKeys.sort(Collections.reverseOrder());
 
 
         for (LocalDateTime key : sortedKeys) {
@@ -104,7 +112,7 @@ public class Ledger {
         ArrayList<LocalDateTime> sortedKeys = new ArrayList<>(transactions.keySet());
 
 
-        Collections.sort(sortedKeys, Collections.reverseOrder());
+        sortedKeys.sort(Collections.reverseOrder());
 
 
         for (LocalDateTime key : sortedKeys) {
@@ -130,7 +138,7 @@ public class Ledger {
         ArrayList<LocalDateTime> sortedKeys = new ArrayList<>(transactions.keySet());
 
 
-        Collections.sort(sortedKeys, Collections.reverseOrder());
+        sortedKeys.sort(Collections.reverseOrder());
 
 
         for (LocalDateTime key : sortedKeys) {
@@ -146,8 +154,16 @@ public class Ledger {
 
     public static void reports() {
 
+        System.out.println();
+
+        System.out.println("     ================================     ");
+        System.out.println("             Reports Screen                ");
+        System.out.println("     ================================     ");
+
+        System.out.println();
 
         boolean reportsScreen = true;
+
 
         while (reportsScreen) {
 
@@ -160,6 +176,8 @@ public class Ledger {
             System.out.println("5 - Search by Vendor");
             System.out.println("6 - Search with either Start/End Date, Desc, Vendor, Amount");
             System.out.println("0 - Back to Ledger Page");
+            System.out.println();
+            System.out.print("Enter Option #: ");
 
             int option = scanner.nextInt();
             scanner.nextLine();
@@ -278,7 +296,7 @@ public class Ledger {
         ArrayList<LocalDateTime> sortedKeys = new ArrayList<>(transactions.keySet());
 
 
-        Collections.sort(sortedKeys, Collections.reverseOrder());
+        sortedKeys.sort(Collections.reverseOrder());
 
 
         for (LocalDateTime key : sortedKeys) {
@@ -332,12 +350,23 @@ public class Ledger {
 
         HashMap<LocalDateTime, Transactions> transactions = getTransaction();
 
-        String option = scanner.nextLine().trim().replaceAll("\\s", "").toLowerCase();
+        String option = scanner.nextLine();
 
 
         for (Transactions key : transactions.values()) {
+            boolean matches = true;
 
-            if (key.getVendorName().trim().replaceAll("\\s", "").equalsIgnoreCase(option) || key.getVendorName().trim().replaceAll("\\s", "").contains(option)) {
+            if (!option.equalsIgnoreCase("")) {
+                try{
+                    if (!key.getVendorName().trim().toLowerCase().replaceAll("\\s", "").contains(option.toLowerCase().replaceAll("\\s", "").trim())) {
+                        matches = false;
+                    }
+                }catch (Exception e){
+
+                }
+
+            }
+            if (matches){
                 System.out.println(key);
             }
 
@@ -355,11 +384,11 @@ public class Ledger {
         HashMap<LocalDateTime, Transactions> transactions = getTransaction();
 
 
-        System.out.print("Enter Start Date YY-MM-DD: ");
+        System.out.print("Enter Start Date (YYYY-MM-DD): ");
         String startDate = scanner.nextLine();
 
 
-        System.out.print("Enter End Date YY-MM-DD: ");
+        System.out.print("Enter End Date (YYYY-MM-DD): ");
         String endDate = scanner.nextLine();
 
 
@@ -367,11 +396,11 @@ public class Ledger {
         String description = scanner.nextLine();
 
 
-        System.out.print("Vendor: ");
+        System.out.print("Vendor/Depositee: ");
         String vendor = scanner.nextLine();
 
 
-        System.out.print("Enter Price 0.00: ");
+        System.out.print("Enter Price : ");
         String price = scanner.nextLine();
 
 
@@ -381,47 +410,72 @@ public class Ledger {
             boolean matches = true;
 
 
-            LocalDate keyDate = key.getDate().atStartOfDay().toLocalDate();
+            LocalDate keyDate = key.getDate();
 
 
             if (!startDate.equalsIgnoreCase("")) {
-                LocalDate start = LocalDate.parse(startDate);
+                try{
+                    LocalDate start = LocalDate.parse(startDate);
 
-                if (keyDate.isBefore(start)) {
-                    matches = false;
+                    if (keyDate.isBefore(start)) {
+                        matches = false;
+                    }
+                }catch (Exception e){
+                    
                 }
+
             }
 
 
             if (!endDate.equalsIgnoreCase("")) {
-                LocalDate end = LocalDate.parse(endDate);
+                try{
+                    LocalDate end = LocalDate.parse(endDate);
 
-                if (keyDate.isAfter(end)) {
-                    matches = false;
+                    if (keyDate.isAfter(end)) {
+                        matches = false;
+                    }
+                }catch (Exception e){
+                    
                 }
+
             }
 
 
             if (!vendor.equalsIgnoreCase("")) {
-                if (!key.getVendorName().toLowerCase().contains(vendor.toLowerCase())) {
-                    matches = false;
+                try{
+                    if (!key.getVendorName().trim().toLowerCase().replaceAll("\\s", "").contains(vendor.toLowerCase().replaceAll("\\s", "").trim())) {
+                        matches = false;
+                    }
+                }catch (Exception e){
+                    
                 }
+
             }
 
 
             if (!description.equalsIgnoreCase("")) {
-                if (!key.getdescription().toLowerCase().contains(description.toLowerCase())) {
-                    matches = false;
+                try{
+                    if (!key.getdescription().trim().toLowerCase().replaceAll("\\s", "").contains(description.toLowerCase().replaceAll("\\s", "").trim())) {
+                        matches = false;
+                    }
+                }catch (Exception e){
+                    
                 }
+
             }
 
 
             if (!price.equalsIgnoreCase("")) {
-                double money = Double.parseDouble(price);
+                try{
+                    double money = Double.parseDouble(price);
 
-                if (Double.compare(key.getPrice(), money) != 0) {
-                    matches = false;
+                    if (Double.compare(key.getPrice(), money) != 0) {
+                        matches = false;
+                    }
+                }catch (Exception e){
+                    
                 }
+
             }
             if (matches) {
 

@@ -4,11 +4,19 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
+
+    //My Transactions class to handle the simple Setters and getters for My application
+    //This class also includes the constructor that is used within my get transaction method in the application class
+
 public class Transactions {
+    //Variables/Objects
+
     private LocalDate date;
     private LocalTime time;
     private String description, vendorName;
     private double price;
+
+    //Setters and Getters
 
     public LocalTime getTime() {
         return time;
@@ -50,7 +58,7 @@ public class Transactions {
         this.price = price;
     }
 
-
+    //Transactions Constructor
     public Transactions(LocalDate date, LocalTime time, String description, String vendorName, double price) {
         this.date = date;
         this.time = time;
@@ -59,8 +67,9 @@ public class Transactions {
         this.price = price;
     }
 
+    //This override method is so whenever the key is read it is formatted like this
     @Override
     public String toString() {
-        return date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + "|" + time.format(DateTimeFormatter.ofPattern("HH:mm:ss")) + "|" + description + "|" + vendorName + "|" + price ;
+        return date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + "|" + time.format(DateTimeFormatter.ofPattern("HH:mm:ss")) + "|" + description + "|" + vendorName + "|" + price;
     }
 }
