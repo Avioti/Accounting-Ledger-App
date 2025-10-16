@@ -205,8 +205,7 @@ public class Application {
                     if (scanner.nextLine().trim().equalsIgnoreCase("yes")) {
                         System.out.println();
                         System.out.print("ReEnter: ");
-                        entry = scanner.next().trim();
-                        scanner.nextLine();
+                        entry = scanner.nextLine().trim();
 
                     } else {
 
