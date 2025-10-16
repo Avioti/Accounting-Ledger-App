@@ -378,6 +378,7 @@ public class Ledger {
         HashMap<LocalDateTime, Transactions> transactions = getTransaction();
 
         String option = scanner.nextLine();
+        retryReportsFunction(option);
 
         System.out.println();
 
@@ -385,7 +386,7 @@ public class Ledger {
         for (Transactions key : transactions.values()) {
             boolean matches = true;
 
-            if (!option.equalsIgnoreCase("")) {
+            if (!option.isBlank()) {
                 try{
                     if (!key.getVendorName().trim().toLowerCase().replaceAll("\\s", "").contains(option.toLowerCase().replaceAll("\\s", "").trim())) {
                         matches = false;
@@ -398,7 +399,7 @@ public class Ledger {
             if (matches){
                 System.out.println(key);
             }
-            Thread.sleep(75);
+
 
         }
 
@@ -416,22 +417,29 @@ public class Ledger {
 
         System.out.print("Enter Start Date (YYYY-MM-DD): ");
         String startDate = scanner.nextLine();
+        retryReportsFunction(startDate);
+        System.out.println();
 
 
         System.out.print("Enter End Date (YYYY-MM-DD): ");
         String endDate = scanner.nextLine();
-
+        retryReportsFunction(endDate);
+        System.out.println();
 
         System.out.print("Description: ");
         String description = scanner.nextLine();
-
+        retryReportsFunction(description);
+        System.out.println();
 
         System.out.print("Vendor/Depositee: ");
         String vendor = scanner.nextLine();
-
+        retryReportsFunction(vendor);
+        System.out.println();
 
         System.out.print("Enter Price : ");
         String price = scanner.nextLine();
+        isNumber(price);
+        retryReportsFunction(price);
 
         System.out.println();
 
@@ -445,7 +453,8 @@ public class Ledger {
             LocalDate keyDate = key.getDate();
 
 
-            if (!startDate.equalsIgnoreCase("")) {
+            if (!startDate.isBlank()) {
+
                 try{
                     LocalDate start = LocalDate.parse(startDate);
 
@@ -459,7 +468,8 @@ public class Ledger {
             }
 
 
-            if (!endDate.equalsIgnoreCase("")) {
+            if (!endDate.isBlank()) {
+              
                 try{
                     LocalDate end = LocalDate.parse(endDate);
 
@@ -473,7 +483,8 @@ public class Ledger {
             }
 
 
-            if (!vendor.equalsIgnoreCase("")) {
+            if (!vendor.isBlank()) {
+              
                 try{
                     if (!key.getVendorName().trim().toLowerCase().replaceAll("\\s", "").contains(vendor.toLowerCase().replaceAll("\\s", "").trim())) {
                         matches = false;
@@ -485,7 +496,8 @@ public class Ledger {
             }
 
 
-            if (!description.equalsIgnoreCase("")) {
+            if (!description.isBlank()) {
+              
                 try{
                     if (!key.getdescription().trim().toLowerCase().replaceAll("\\s", "").contains(description.toLowerCase().replaceAll("\\s", "").trim())) {
                         matches = false;
@@ -497,7 +509,8 @@ public class Ledger {
             }
 
 
-            if (!price.equalsIgnoreCase("")) {
+            if (!price.isBlank()) {
+              
                 try{
                     double money = Double.parseDouble(price);
 
@@ -514,9 +527,49 @@ public class Ledger {
                 System.out.println(key);
             }
 
-            Thread.sleep(75);
+
         }
 
+    }
+
+    public static void retryReportsFunction(String entry) throws InterruptedException {
+        if(!entry.isBlank()){
+        System.out.println();
+
+        Scanner scanner = new Scanner(System.in);
+
+        boolean notNamed = true;
+
+        while(notNamed){
+            if(!entry.isBlank()){
+                System.out.println("Is " + entry.replaceAll("\\s", " ") + " correct?");
+                System.out.print("Enter (yes/no): ");
+                if(scanner.nextLine().trim().equalsIgnoreCase("yes")){
+                    notNamed = false;
+                }else{
+                    System.out.println();
+                    System.out.println("Retry entry?");
+                    System.out.print("Enter (yes/no): ");
+                    if(scanner.nextLine().trim().equalsIgnoreCase("yes")){
+                        System.out.println();
+                        System.out.print("ReEnter: ");
+                        entry = scanner.next().trim();
+                        scanner.nextLine();
+                    }else{
+                        System.out.println();
+                        System.out.println("Exit to Reports screen?");
+                        System.out.println("(Yes/No)");
+                        if(scanner.nextLine().trim().equalsIgnoreCase("yes")){
+                            reports();
+                        }
+                    }
+
+                }
+            }
+
+
+
+        }}
     }
 
 

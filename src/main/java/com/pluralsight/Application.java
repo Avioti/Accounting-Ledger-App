@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.sql.SQLOutput;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -14,12 +15,6 @@ import static com.pluralsight.Ledger.ledgerScreen;
 
 public class Application {
     public static void main(String[] args) throws InterruptedException {
-        homeScreen();
-    }
-
-
-    public static void homeScreen() throws InterruptedException {
-
         Scanner scanner = new Scanner(System.in);
 
 
@@ -32,8 +27,16 @@ public class Application {
         System.out.println("Press Enter to continue");
         scanner.nextLine();
 
+        homeScreen();
+    }
+
+
+    public static void homeScreen() throws InterruptedException {
+
+        Scanner scanner = new Scanner(System.in);
 
         boolean storeActive = true;
+
 
         while (storeActive) {
             System.out.println();
@@ -49,50 +52,58 @@ public class Application {
             System.out.println();
             System.out.print("Enter Option #: ");
 
-            int option = scanner.nextInt();
-            scanner.nextLine();
 
-            switch (option) {
-                case 1:
+            try {
 
-                    addDeposit();
+                int option = scanner.nextInt();
+                scanner.nextLine();
 
-                    break;
+                switch (option) {
+                    case 1:
 
-                case 2:
+                        addDeposit();
 
-                    makePayment();
+                        break;
 
-                    break;
+                    case 2:
 
-                case 3:
+                        makePayment();
 
-                    ledgerScreen();
+                        break;
 
-                    break;
+                    case 3:
 
-                case 4:
+                        ledgerScreen();
 
-                    System.out.println("Are you sure you want to Exit?");
-                    System.out.print("\nEnter Yes/No: ");
-                    if(scanner.nextLine().trim().equalsIgnoreCase("yes")){
-                        storeActive = false;
-                    }
+                        break;
+
+                    case 4:
+
+                        System.out.println("Are you sure you want to Exit?");
+                        System.out.print("\nEnter Yes/No: ");
+                        if (scanner.nextLine().trim().equalsIgnoreCase("yes")) {
+                            storeActive = false;
+                        }
+
+                        break;
+
+                    default:
+
+                        System.out.println("Enter valid option");
 
 
-
-                    break;
-
-                default:
-
-                    System.out.println("Enter valid option");
+                }
+            } catch (Exception e) {
+                System.out.println("Enter Valid Option");
 
             }
         }
+
+
     }
 
 
-    public static void addDeposit() {
+    public static void addDeposit() throws InterruptedException {
 
         Scanner scanner = new Scanner(System.in);
 
@@ -100,41 +111,41 @@ public class Application {
         System.out.println();
         System.out.println("Enter Deposit info");
 
+        System.out.println();
         System.out.print("Description: ");
-        String description = scanner.next().trim().toLowerCase();
-        scanner.nextLine();
+        String description = scanner.nextLine().trim().toLowerCase();
+        retryFunction(description);
 
+        System.out.println();
         System.out.print("Name of Depositee: ");
-        String vendor = scanner.next().trim();
-        scanner.nextLine();
+        String vendor = scanner.nextLine().trim();
+        retryFunction(vendor);
 
+        System.out.println();
         System.out.print("Total Deposited (#): ");
         String price = scanner.next().trim();
-        if(!price.equalsIgnoreCase("")){
-            try{
-                Double.parseDouble(price);
-            }catch (Exception ignored){
-                System.out.println();
-                System.out.println("Invalid Price entry Try again");
-
-
-            }
-        }
+        isNumber(price);
+        retryFunction(price);
 
         System.out.println();
         scanner.nextLine();
 
 
         try {
+            if (!price.isBlank()) {
+                double money = Double.parseDouble(price);
 
-            FileWriter fileWriter = new FileWriter("src/main/resources/transactions.csv", true);
+                FileWriter fileWriter = new FileWriter("src/main/resources/transactions.csv", true);
 
-            BufferedWriter bufWriter = new BufferedWriter(fileWriter);
-            bufWriter.newLine();
-            String format = String.format(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + "|" + LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")) + "|" + "%s|%s|$%.2f", description, vendor, price);
-            bufWriter.write(format);
-            bufWriter.close();
+                BufferedWriter bufWriter = new BufferedWriter(fileWriter);
+                bufWriter.newLine();
+                String format = String.format(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + "|" + LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")) + "|" + "%s|%s|%.2f", description, vendor, money);
+                bufWriter.write(format);
+                bufWriter.flush();
+                bufWriter.close();
 
+
+            }
         } catch (Exception ignored) {
 
 
@@ -142,50 +153,114 @@ public class Application {
     }
 
 
-    public static void makePayment() {
+    public static void isNumber(String str) {
+        try {
+
+            Integer.parseInt(str);
+
+        } catch (Exception e) {
+            System.out.println();
+
+            System.out.println("Non Number value Detected " + "\n=====INVALID PRICE=====");
+
+            System.out.println("=====NUMBERS ONLY=====");
+
+        }
+    }
+
+
+    public static void retryFunction(String entry) throws InterruptedException {
+
+        Scanner scanner = new Scanner(System.in);
+        System.out.println();
+        boolean notNamed = true;
+
+        while (notNamed) {
+            if (!entry.isBlank()) {
+
+                System.out.println("Is " + entry.replaceAll("\\s", " ") + " correct?");
+                System.out.print("Enter (yes/no): ");
+
+                if (scanner.nextLine().trim().equalsIgnoreCase("yes")) {
+                    notNamed = false;
+                } else {
+
+                    System.out.println();
+                    System.out.println("Retry entry?");
+                    System.out.print("Enter (yes/no): ");
+
+                    if (scanner.nextLine().trim().equalsIgnoreCase("yes")) {
+                        System.out.println();
+                        System.out.print("ReEnter: ");
+                        entry = scanner.next().trim();
+                        scanner.nextLine();
+
+                    } else {
+
+                        System.out.println();
+                        System.out.println("Exit to Homescreen?");
+                        System.out.println("(Yes/No)");
+
+                        if (scanner.nextLine().trim().equalsIgnoreCase("yes")) {
+                            homeScreen();
+                        }
+
+                    }
+
+                }
+            }
+
+
+        }
+    }
+
+    public static void makePayment() throws InterruptedException {
         Scanner scanner = new Scanner(System.in);
 
+
         System.out.println();
 
-        System.out.println("Enter Deposit info");
+        System.out.println("Enter Payment info");
+
+        System.out.println();
         System.out.print("Description: ");
-        String description = scanner.next().trim().toLowerCase();
-        scanner.nextLine();
+        String description = scanner.nextLine().trim().toLowerCase();
+        retryFunction(description);
 
-        System.out.print("Vendor: ");
-        String vendor = scanner.next().trim();
-        scanner.nextLine();
+        System.out.println();
+        System.out.print("Vendor Name: ");
+        String vendor = scanner.nextLine().trim();
+        retryFunction(vendor);
 
+        System.out.println();
         System.out.print("Total deducted (#): ");
         String price = scanner.next().trim();
-        if(!price.equalsIgnoreCase("")){
-            try{
-                Double.parseDouble(price);
-            }catch (Exception ignored){
-                System.out.println();
-                System.out.println("Invalid Price entry Try again");
-            }
-        }
+        isNumber(price);
+        retryFunction(price);
 
         System.out.println();
         scanner.nextLine();
-
 
 
         try {
+            if (!price.isBlank()) {
+                double money = Double.parseDouble(price);
 
-            FileWriter fileWriter = new FileWriter("src/main/resources/transactions.csv", true);
+                FileWriter fileWriter = new FileWriter("src/main/resources/transactions.csv", true);
 
-            BufferedWriter bufWriter = new BufferedWriter(fileWriter);
-            bufWriter.newLine();
-            String format = String.format(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + "|" + LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")) + "|" + "%s|%s|$-%.2f", description, vendor, price);
-            bufWriter.write(format);
-            bufWriter.close();
+                BufferedWriter bufWriter = new BufferedWriter(fileWriter);
 
+                bufWriter.newLine();
+                String format = String.format(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + "|" + LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")) + "|" + "%s|%s|-%.2f", description, vendor, money);
+                bufWriter.write(format);
+                bufWriter.flush();
+                bufWriter.close();
+            }
         } catch (Exception e) {
 
 
         }
+
     }
 
     public static HashMap<LocalDateTime, Transactions> getTransaction() {
@@ -230,11 +305,6 @@ public class Application {
 
         return transactions;
     }
-
-
-
-
-
 
 
 }
