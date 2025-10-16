@@ -13,6 +13,8 @@ public class Ledger {
     public static void ledgerScreen() throws InterruptedException {
 
 
+
+
         boolean inLedger = true;
 
         while (inLedger) {
@@ -36,10 +38,11 @@ public class Ledger {
             System.out.println();
             System.out.print("Enter Option #: ");
 
-            int option = scanner.nextInt();
-            scanner.nextLine();
+            String option = scanner.nextLine();
+            if (ifNumber(option)) {
+                int choice = Integer.parseInt(option);
 
-            switch (option) {
+                switch (choice) {
 
                 case 1:
 
@@ -70,8 +73,13 @@ public class Ledger {
                     break;
 
                 default:
-                    System.out.println("Enter valid option");
 
+                    System.out.println("Sending back to Homescreen...");
+                    break;
+
+            }}else {
+                System.out.println();
+                System.out.println("Enter valid option");
             }
         }
 
@@ -86,7 +94,7 @@ public class Ledger {
         System.out.println();
 
 
-        System.out.println("Transactions & Invoices: ");
+        System.out.println("Deposits & Transactions: ");
 
 
         ArrayList<LocalDateTime> sortedKeys = new ArrayList<>(transactions.keySet());
@@ -164,12 +172,6 @@ public class Ledger {
 
     public static void reports() throws InterruptedException {
 
-        System.out.println();
-
-        System.out.println("     ================================     ");
-        System.out.println("             Reports Screen                ");
-        System.out.println("     ================================     ");
-
 
 
         boolean reportsScreen = true;
@@ -177,9 +179,18 @@ public class Ledger {
 
         while (reportsScreen) {
 
-            Scanner scanner = new Scanner(System.in);
+            System.out.println();
+
+            System.out.println("     ================================     ");
+            System.out.println("             Reports Screen                ");
+            System.out.println("     ================================     ");
+
 
             System.out.println();
+
+            Scanner scanner = new Scanner(System.in);
+
+
 
             System.out.println("1 - Month To Date");
             System.out.println("2 - Previous Month");
@@ -191,10 +202,11 @@ public class Ledger {
             System.out.println();
             System.out.print("Enter Option #: ");
 
-            int option = scanner.nextInt();
-            scanner.nextLine();
+            String option = scanner.nextLine();
+            if (ifNumber(option)) {
+                int choice = Integer.parseInt(option);
 
-            switch (option) {
+            switch (choice) {
 
                 case 1:
                     monthToDate();
@@ -234,8 +246,13 @@ public class Ledger {
                     break;
 
                 default:
-                    System.out.println("Enter valid option");
+                    System.out.println("Sending back to Homescreen...");
+                    ledgerScreen();
+                    break;
 
+            }}else {
+                System.out.println();
+                System.out.println("Enter valid option");
             }
 
 

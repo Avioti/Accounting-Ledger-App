@@ -39,6 +39,7 @@ public class Application {
 
 
         while (storeActive) {
+
             System.out.println();
             System.out.println("     ================================     ");
             System.out.println("               Home Screen                ");
@@ -53,12 +54,11 @@ public class Application {
             System.out.print("Enter Option #: ");
 
 
-            try {
+            String option = scanner.nextLine();
+            if (ifNumber(option)) {
+                int choice = Integer.parseInt(option);
 
-                int option = scanner.nextInt();
-                scanner.nextLine();
-
-                switch (option) {
+                switch (choice) {
                     case 1:
 
                         addDeposit();
@@ -90,12 +90,13 @@ public class Application {
                     default:
 
                         System.out.println("Enter valid option");
+                        break;
 
 
                 }
-            } catch (Exception e) {
-                System.out.println("Enter Valid Option");
-
+            } else {
+                System.out.println();
+                System.out.println("Enter valid option");
             }
         }
 
@@ -164,6 +165,18 @@ public class Application {
             System.out.println("Non Number value Detected " + "\n=====INVALID PRICE=====");
 
             System.out.println("=====NUMBERS ONLY=====");
+
+        }
+    }
+
+    public static boolean ifNumber(String str) {
+        try {
+
+            Integer.parseInt(str);
+            return true;
+
+        } catch (Exception e) {
+            return false;
 
         }
     }
