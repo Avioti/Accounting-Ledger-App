@@ -94,7 +94,7 @@ public class Ledger {
         System.out.println();
 
 
-        System.out.println("Deposits & Transactions: ");
+        System.out.println("Deposits & Payments: ");
 
 
         ArrayList<LocalDateTime> sortedKeys = new ArrayList<>(transactions.keySet());
