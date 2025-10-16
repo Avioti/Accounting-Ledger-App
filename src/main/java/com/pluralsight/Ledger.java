@@ -455,7 +455,6 @@ public class Ledger {
 
         System.out.print("Enter Price : ");
         String price = scanner.nextLine();
-        isNumber(price);
         retryReportsFunction(price);
 
         System.out.println();
@@ -570,8 +569,8 @@ public class Ledger {
                     if(scanner.nextLine().trim().equalsIgnoreCase("yes")){
                         System.out.println();
                         System.out.print("ReEnter: ");
-                        entry = scanner.next().trim();
-                        scanner.nextLine();
+                        entry = scanner.nextLine().trim().toLowerCase();
+
                     }else{
                         System.out.println();
                         System.out.println("Exit to Reports screen?");
