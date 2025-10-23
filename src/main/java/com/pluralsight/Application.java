@@ -14,7 +14,7 @@ import static com.pluralsight.Ledger.ledgerScreen;
 import static com.pluralsight.Utilities.*;
 
 public class Application {
-    public static Scanner scanner = new Scanner(System.in);
+    public static final Scanner scanner = new Scanner(System.in);
     public static HashMap<LocalDateTime, Transactions> transactions = getTransaction();
 
     public static void main(String[] args)  {
