@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.sql.SQLOutput;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -12,12 +11,20 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import static com.pluralsight.Ledger.ledgerScreen;
+import static com.pluralsight.Utilities.*;
 
 public class Application {
-    public static void main(String[] args) throws InterruptedException {
-        Scanner scanner = new Scanner(System.in);
+    public static Scanner scanner = new Scanner(System.in);
+    public static HashMap<LocalDateTime, Transactions> transactions = getTransaction();
+
+    public static void main(String[] args)  {
+
+        firstScreen();
 
 
+    }
+
+    public static void firstScreen()  {
         System.out.println();
         System.out.println("==========================================");
         System.out.println("Welcome to your personal Accounting Ledger");
@@ -31,9 +38,8 @@ public class Application {
     }
 
 
-    public static void homeScreen() throws InterruptedException {
+    public static void homeScreen()  {
 
-        Scanner scanner = new Scanner(System.in);
 
         boolean storeActive = true;
 
@@ -54,7 +60,7 @@ public class Application {
             System.out.print("Enter Option #: ");
 
 
-            String option = scanner.nextLine();
+            String option = scanner.nextLine().trim();
             if (ifNumber(option)) {
                 int choice = Integer.parseInt(option);
 
@@ -104,9 +110,7 @@ public class Application {
     }
 
 
-    public static void addDeposit() throws InterruptedException {
-
-        Scanner scanner = new Scanner(System.in);
+    public static void addDeposit()  {
 
 
         System.out.println();
@@ -115,18 +119,20 @@ public class Application {
         System.out.println();
         System.out.print("Description: ");
         String description = scanner.nextLine().trim().toLowerCase();
-        retryFunction(description);
+        description = retryFunction(description);
+
 
         System.out.println();
         System.out.print("Name of Depositee: ");
         String vendor = scanner.nextLine().trim();
-        retryFunction(vendor);
+        vendor = retryFunction(vendor);
 
         System.out.println();
         System.out.print("Total Deposited (#): ");
         String price = scanner.next().trim();
         isNumber(price);
-        retryFunction(price);
+        price = retryFunction(price);
+
 
         System.out.println();
         scanner.nextLine();
@@ -154,80 +160,7 @@ public class Application {
     }
 
 
-    public static void isNumber(String str) {
-        try {
-
-            Integer.parseInt(str);
-
-        } catch (Exception e) {
-            System.out.println();
-
-            System.out.println("Non Number value Detected " + "\n=====INVALID PRICE=====");
-
-            System.out.println("=====NUMBERS ONLY=====");
-
-        }
-    }
-
-    public static boolean ifNumber(String str) {
-        try {
-
-            Integer.parseInt(str);
-            return true;
-
-        } catch (Exception e) {
-            return false;
-
-        }
-    }
-
-
-    public static void retryFunction(String entry) throws InterruptedException {
-
-        Scanner scanner = new Scanner(System.in);
-        System.out.println();
-        boolean notNamed = true;
-
-        while (notNamed) {
-            if (!entry.isBlank()) {
-
-                System.out.println("Is " + entry.replaceAll("\\s", " ") + " correct?");
-                System.out.print("Enter (yes/no): ");
-
-                if (scanner.nextLine().trim().equalsIgnoreCase("yes")) {
-                    notNamed = false;
-                } else {
-
-                    System.out.println();
-                    System.out.println("Retry entry?");
-                    System.out.print("Enter (yes/no): ");
-
-                    if (scanner.nextLine().trim().equalsIgnoreCase("yes")) {
-                        System.out.println();
-                        System.out.print("ReEnter: ");
-                        entry = scanner.nextLine().trim();
-
-                    } else {
-
-                        System.out.println();
-                        System.out.println("Exit to Homescreen?");
-                        System.out.println("(Yes/No)");
-
-                        if (scanner.nextLine().trim().equalsIgnoreCase("yes")) {
-                            homeScreen();
-                        }
-
-                    }
-
-                }
-            }
-
-
-        }
-    }
-
-    public static void makePayment() throws InterruptedException {
-        Scanner scanner = new Scanner(System.in);
+    public static void makePayment()  {
 
 
         System.out.println();
@@ -237,18 +170,18 @@ public class Application {
         System.out.println();
         System.out.print("Description: ");
         String description = scanner.nextLine().trim().toLowerCase();
-        retryFunction(description);
+        description = retryFunction(description);
 
         System.out.println();
         System.out.print("Vendor Name: ");
         String vendor = scanner.nextLine().trim();
-        retryFunction(vendor);
+        vendor = retryFunction(vendor);
 
         System.out.println();
         System.out.print("Total deducted (#): ");
         String price = scanner.next().trim();
         isNumber(price);
-        retryFunction(price);
+        price = retryFunction(price);
 
         System.out.println();
         scanner.nextLine();

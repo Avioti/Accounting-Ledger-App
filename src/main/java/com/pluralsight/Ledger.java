@@ -4,13 +4,16 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Scanner;
 import static com.pluralsight.Application.*;
+import static com.pluralsight.Utilities.ifNumber;
+import static com.pluralsight.Utilities.retryFunction;
 
 
 public class Ledger {
-    public static void ledgerScreen() throws InterruptedException {
+    static int fastSleep = 75;
+    static int slowerSleep = 100;
+
+    public static void ledgerScreen()  {
 
 
 
@@ -27,7 +30,7 @@ public class Ledger {
 
             System.out.println();
 
-            Scanner scanner = new Scanner(System.in);
+           
 
 
             System.out.println("1 - All");
@@ -75,7 +78,7 @@ public class Ledger {
                 default:
 
                     System.out.println("Sending back to Homescreen...");
-                    break;
+
 
             }}else {
                 System.out.println();
@@ -85,10 +88,10 @@ public class Ledger {
 
     }
 
-    public static void displayAll() throws InterruptedException {
+    public static void displayAll()  {
 
 
-        HashMap<LocalDateTime, Transactions> transactions = getTransaction();
+        transactions = getTransaction();
 
 
         System.out.println();
@@ -106,16 +109,16 @@ public class Ledger {
         for (LocalDateTime key : sortedKeys) {
 
             System.out.println(transactions.get(key));
-            Thread.sleep(100);
+            Utilities.sleep(fastSleep);
 
         }
 
     }
 
-    public static void displayDeposit() throws InterruptedException {
+    public static void displayDeposit()  {
 
 
-        HashMap<LocalDateTime, Transactions> transactions = getTransaction();
+        transactions = getTransaction();
 
 
         System.out.println();
@@ -136,15 +139,15 @@ public class Ledger {
             if (d.getPrice() > 0) {
                 System.out.println(d);
             }
-            Thread.sleep(100);
+            Utilities.sleep(fastSleep);
         }
 
     }
 
-    public static void displayPayments() throws InterruptedException {
+    public static void displayPayments()  {
 
 
-        HashMap<LocalDateTime, Transactions> transactions = getTransaction();
+        transactions = getTransaction();
 
 
         System.out.println();
@@ -165,12 +168,12 @@ public class Ledger {
             if (d.getPrice() < 0) {
                 System.out.println(d);
             }
-            Thread.sleep(100);
+            Utilities.sleep(fastSleep);
         }
 
     }
 
-    public static void reports() throws InterruptedException {
+    public static void reports()  {
 
 
 
@@ -188,7 +191,7 @@ public class Ledger {
 
             System.out.println();
 
-            Scanner scanner = new Scanner(System.in);
+           
 
 
 
@@ -261,13 +264,13 @@ public class Ledger {
 
     }
 
-    public static void monthToDate() throws InterruptedException {
+    public static void monthToDate()  {
 
         System.out.println();
 
         System.out.println("Month-To-Date");
 
-        HashMap<LocalDateTime, Transactions> transactions = getTransaction();
+        transactions = getTransaction();
 
         LocalDateTime todayDate = LocalDateTime.now().plusDays(1);
         LocalDateTime option = todayDate.withDayOfMonth(1);
@@ -279,19 +282,19 @@ public class Ledger {
                 System.out.println(value);
             }
 
-            Thread.sleep(75);
+            Utilities.sleep(slowerSleep);
         }
 
 
     }
 
-    public static void previousMonth() throws InterruptedException {
+    public static void previousMonth()  {
 
         System.out.println();
 
         System.out.println("Previous-Month");
 
-        HashMap<LocalDateTime, Transactions> transactions = getTransaction();
+        transactions = getTransaction();
 
 
         LocalDate todayDate = LocalDate.now();
@@ -312,19 +315,19 @@ public class Ledger {
                 System.out.println(value);
 
             }
-            Thread.sleep(75);
+            Utilities.sleep(slowerSleep);
 
         }
 
     }
 
-    public static void yearToDate() throws InterruptedException {
+    public static void yearToDate()  {
 
         System.out.println();
 
         System.out.println("Year-To-Date");
 
-        HashMap<LocalDateTime, Transactions> transactions = getTransaction();
+        transactions = getTransaction();
 
         int year = LocalDate.now().getYear();
         LocalDate todayDate = LocalDate.now();
@@ -343,17 +346,17 @@ public class Ledger {
             if (!sortedKey.getDate().isAfter(todayDate) && sortedKey.getDate().isAfter(firstDay)) {
                 System.out.println(sortedKey);
             }
-            Thread.sleep(75);
+            Utilities.sleep(slowerSleep);
         }
     }
 
-    public static void previousYear() throws InterruptedException {
+    public static void previousYear()  {
 
         System.out.println();
 
         System.out.println("Previous-year");
 
-        HashMap<LocalDateTime, Transactions> transactions = getTransaction();
+        transactions = getTransaction();
 
 
         int year = LocalDate.now().getYear();
@@ -377,14 +380,14 @@ public class Ledger {
             if (!sortedKey.getDate().isAfter(lastDay) && sortedKey.getDate().isAfter(firstDay)) {
                 System.out.println(sortedKey);
             }
-            Thread.sleep(75);
+            Utilities.sleep(slowerSleep);
         }
     }
 
-    public static void searchByVendor() throws InterruptedException {
+    public static void searchByVendor()  {
 
 
-        Scanner scanner = new Scanner(System.in);
+       
 
         System.out.println();
 
@@ -392,10 +395,10 @@ public class Ledger {
         System.out.print("Enter: ");
 
 
-        HashMap<LocalDateTime, Transactions> transactions = getTransaction();
+        transactions = getTransaction();
 
         String option = scanner.nextLine();
-        retryReportsFunction(option);
+        retryFunction(option);
 
         System.out.println();
 
@@ -422,40 +425,37 @@ public class Ledger {
 
     }
 
-    public static void searchFunction() throws InterruptedException {
-
-
-        Scanner scanner = new Scanner(System.in);
+    public static void searchFunction()  {
 
         System.out.println();
 
-        HashMap<LocalDateTime, Transactions> transactions = getTransaction();
+        transactions = getTransaction();
 
 
         System.out.print("Enter Start Date (YYYY-MM-DD): ");
         String startDate = scanner.nextLine();
-        retryReportsFunction(startDate);
+        retryFunction(startDate);
         System.out.println();
 
 
         System.out.print("Enter End Date (YYYY-MM-DD): ");
         String endDate = scanner.nextLine();
-        retryReportsFunction(endDate);
+        retryFunction(endDate);
         System.out.println();
 
         System.out.print("Description: ");
         String description = scanner.nextLine();
-        retryReportsFunction(description);
+        retryFunction(description);
         System.out.println();
 
         System.out.print("Vendor/Depositee: ");
         String vendor = scanner.nextLine();
-        retryReportsFunction(vendor);
+        retryFunction(vendor);
         System.out.println();
 
         System.out.print("Enter Price : ");
         String price = scanner.nextLine();
-        retryReportsFunction(price);
+        retryFunction(price);
 
         System.out.println();
 
@@ -548,45 +548,7 @@ public class Ledger {
 
     }
 
-    public static void retryReportsFunction(String entry) throws InterruptedException {
-        if(!entry.isBlank()){
-        System.out.println();
 
-        Scanner scanner = new Scanner(System.in);
-
-        boolean notNamed = true;
-
-        while(notNamed){
-            if(!entry.isBlank()){
-                System.out.println("Is " + entry.replaceAll("\\s", " ") + " correct?");
-                System.out.print("Enter (yes/no): ");
-                if(scanner.nextLine().trim().equalsIgnoreCase("yes")){
-                    notNamed = false;
-                }else{
-                    System.out.println();
-                    System.out.println("Retry entry?");
-                    System.out.print("Enter (yes/no): ");
-                    if(scanner.nextLine().trim().equalsIgnoreCase("yes")){
-                        System.out.println();
-                        System.out.print("ReEnter: ");
-                        entry = scanner.nextLine().trim().toLowerCase();
-
-                    }else{
-                        System.out.println();
-                        System.out.println("Exit to Reports screen?");
-                        System.out.println("(Yes/No)");
-                        if(scanner.nextLine().trim().equalsIgnoreCase("yes")){
-                            reports();
-                        }
-                    }
-
-                }
-            }
-
-
-
-        }}
-    }
 
 
 }
