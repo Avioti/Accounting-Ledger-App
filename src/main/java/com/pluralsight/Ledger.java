@@ -41,7 +41,7 @@ public class Ledger {
             System.out.println();
             System.out.print("Enter Option #: ");
 
-            String option = scanner.nextLine();
+            String option = scanner.nextLine().trim();
             if (ifNumber(option)) {
                 int choice = Integer.parseInt(option);
 
@@ -205,7 +205,7 @@ public class Ledger {
             System.out.println();
             System.out.print("Enter Option #: ");
 
-            String option = scanner.nextLine();
+            String option = scanner.nextLine().trim();
             if (ifNumber(option)) {
                 int choice = Integer.parseInt(option);
 
